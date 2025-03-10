@@ -3,19 +3,35 @@ import {
   ButtonGroup,
   ChakraProvider,
   defaultSystem,
+  Grid,
+  GridItem,
   HStack,
+  Show,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 function App() {
+  const isLgOrLarger = useBreakpointValue({ base: false, lg: true });
+
   return (
-    <div>
-      <Button
-        _active={{ bg: "blue" }} // custom active state styling
-        colorPalette="blue"
-      >
-        Click me
-      </Button>
-    </div>
+    <Grid
+      templateAreas={{
+        base: `"nav" "main"`,
+        lg: `"nav nav" "aside main"`,
+      }}
+    >
+      <GridItem area="nav" bg="green">
+        Nav
+      </GridItem>{" "}
+      <Show when={isLgOrLarger}>
+        <GridItem area="aside" bg="gold">
+          Aside
+        </GridItem>{" "}
+      </Show>
+      <GridItem area="main" bg="dodgerblue">
+        Main
+      </GridItem>
+    </Grid>
   );
 }
 
