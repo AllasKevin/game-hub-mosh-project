@@ -12,6 +12,7 @@ import {
 import NavBar from "./components/NavBar";
 import { ColorModeButton, useColorModeValue } from "./components/ui/color-mode";
 import GameGrid from "./components/GameGrid";
+import { BsFillAlarmFill } from "react-icons/bs";
 
 function App() {
   const isLgOrLarger = useBreakpointValue({ base: false, lg: true });

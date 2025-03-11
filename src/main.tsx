@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import App from "./App";
+import { BsFillAlarmFill } from "react-icons/bs";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

@@ -11,6 +11,7 @@ export default defineConfig({
         target: 'https://rawg2steam.phalco.de',
         changeOrigin: true,
         secure: false,
+        timeout: 4000
       },
     },
   },
