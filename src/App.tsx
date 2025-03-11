@@ -32,13 +32,11 @@ function App() {
         <NavBar></NavBar>
       </GridItem>{" "}
       <Show when={isLgOrLarger}>
-        <GridItem area="aside" bg={asideBg} color={asideColor}>
+        <GridItem area="aside" /*bg={asideBg} color={asideColor}*/>
           Aside
         </GridItem>{" "}
       </Show>
-      <GridItem area="main" bg={mainBg} color={mainColor}>
-        Main
-      </GridItem>
+      <GridItem area="main" /*bg={mainBg} color={mainColor}*/>Main</GridItem>
     </Grid>
   );
 }
