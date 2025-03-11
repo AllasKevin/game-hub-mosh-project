@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import NavBar from "./components/NavBar";
 import { ColorModeButton, useColorModeValue } from "./components/ui/color-mode";
+import GameGrid from "./components/GameGrid";
 
 function App() {
   const isLgOrLarger = useBreakpointValue({ base: false, lg: true });
@@ -36,7 +37,9 @@ function App() {
           Aside
         </GridItem>{" "}
       </Show>
-      <GridItem area="main" /*bg={mainBg} color={mainColor}*/>Main</GridItem>
+      <GridItem area="main" /*bg={mainBg} color={mainColor}*/>
+        <GameGrid />
+      </GridItem>
     </Grid>
   );
 }
