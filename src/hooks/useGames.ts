@@ -14,6 +14,7 @@ export interface Game {
   name: string;
   background_image: string;
   platforms: { platform: Platform}[];
+  metacritic: number;
 }
 
 interface FetchGamesResponse {
@@ -32,7 +33,8 @@ const useGames = () => {
     .then((res) => {
       const modifiedGames = res.data.results.map((game) => ({
         ...game,
-        id: game.id * Math.random(), // Example transformation
+        id: game.id * Math.random(),
+        metacritic: Math.trunc(100 * Math.random()), 
       }));
 
       setGames((prevGames) => [...prevGames, ...modifiedGames]);
