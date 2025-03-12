@@ -13,6 +13,9 @@ import NavBar from "./components/NavBar";
 import { ColorModeButton, useColorModeValue } from "./components/ui/color-mode";
 import GameGrid from "./components/GameGrid";
 import { BsFillAlarmFill } from "react-icons/bs";
+import GenreList from "./components/GenreList";
+import useGames from "./hooks/useGames";
+import { useEffect } from "react";
 
 function App() {
   const isLgOrLarger = useBreakpointValue({ base: false, lg: true });
@@ -21,6 +24,8 @@ function App() {
 
   const mainBg = useColorModeValue("blue.500", "blue.200");
   const mainColor = useColorModeValue("white", "gray.800");
+
+  const { games, error, isLoading, genres } = useGames();
 
   return (
     <Grid
@@ -35,11 +40,11 @@ function App() {
       </GridItem>{" "}
       <Show when={isLgOrLarger}>
         <GridItem area="aside" /*bg={asideBg} color={asideColor}*/>
-          Aside
+          <GenreList genres={genres} error={error} isLoading={isLoading} />
         </GridItem>{" "}
       </Show>
       <GridItem area="main" /*bg={mainBg} color={mainColor}*/>
-        <GameGrid />
+        <GameGrid games={games} error={error} isLoading={isLoading} />
       </GridItem>
     </Grid>
   );
