@@ -25,7 +25,7 @@ function App() {
   const mainBg = useColorModeValue("blue.500", "blue.200");
   const mainColor = useColorModeValue("white", "gray.800");
 
-  const { games, error, isLoading, genres } = useGames();
+  const { games, error, isLoading, gatheredGenres } = useGames();
 
   return (
     <Grid
@@ -34,13 +34,21 @@ function App() {
         base: `"nav" "main"`,
         lg: `"nav nav" "aside main"`,
       }}
+      templateColumns={{
+        base: "1fr",
+        lg: "200px 1fr",
+      }}
     >
       <GridItem area="nav">
         <NavBar></NavBar>
       </GridItem>{" "}
       <Show when={isLgOrLarger}>
-        <GridItem area="aside" /*bg={asideBg} color={asideColor}*/>
-          <GenreList genres={genres} error={error} isLoading={isLoading} />
+        <GridItem area="aside" paddingX={2} /*bg={asideBg} color={asideColor}*/>
+          <GenreList
+            genres={gatheredGenres}
+            error={error}
+            isLoading={isLoading}
+          />
         </GridItem>{" "}
       </Show>
       <GridItem area="main" /*bg={mainBg} color={mainColor}*/>

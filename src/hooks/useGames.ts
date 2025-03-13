@@ -20,11 +20,18 @@ export interface Game {
 export interface Genre {
     id: number;
     name: string;
+    image: string;
+}
+
+export interface GatheredGenres {
+    genres: Set<string>;
+    images: string[];
 }
 
 export interface FetchGenresResponse {
     id: number;
     genres: Genre[];
+    box_image: string;
 }
 
 export interface FetchGamesResponse {
@@ -44,8 +51,13 @@ const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const [genres, setGenres] = useState<Set<string>>(new Set());
   let aggregatedGenres = new Set<string>();
+  let aggregatedImages: string[] = [];
+  const [gatheredGenres, setGenres] = useState<GatheredGenres>({
+    genres: aggregatedGenres,
+    images: aggregatedImages,
+  });
+
 
   async function fetchGenresForAllGames(games: Game[], controller: AbortController) {
     for (const game of games) {
@@ -54,13 +66,19 @@ const useGames = () => {
         res2.data.genres.forEach((genre) => {
           //console.log("Genres of GameId:" + game.id + " is " + genre.name);
           aggregatedGenres.add(genre.name);
+          aggregatedImages[aggregatedGenres.size -1] = res2.data.box_image;
         });
       } catch (err: any) {
         if (axios.isCancel(err)) continue;
         setError(err.message);
       }
     }
-    setGenres(aggregatedGenres);
+
+    const aggregatedGatheredGenres : GatheredGenres = {
+      genres: aggregatedGenres,
+      images: aggregatedImages,
+    }
+    setGenres(aggregatedGatheredGenres);
 
     setLoading(false);
   }
@@ -90,8 +108,9 @@ const useGames = () => {
     fetchGames(controller);
     return () => controller.abort();
   }, []);
+  const valuesArray = [...aggregatedGenres];
 
-  return { games, error, isLoading, genres};
+  return { games, error, isLoading, gatheredGenres};
 }
 
 export default useGames;
