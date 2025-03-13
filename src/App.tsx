@@ -47,6 +47,7 @@ function App() {
       <Show when={isLgOrLarger}>
         <GridItem area="aside" paddingX={2} /*bg={asideBg} color={asideColor}*/>
           <GenreList
+            selectedGenre={selectedGenre}
             genres={gatheredGenres}
             error={error}
             isLoadingGenres={isLoadingGenres}

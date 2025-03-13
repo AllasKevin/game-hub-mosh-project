@@ -66,7 +66,6 @@ const useGames = (selectedGenre: string | null) => {
       try {
         const res2 = await apiClient.get<FetchGenresResponse>(`/games/${game.id}`, { signal: controller.signal });
         res2.data.genres.forEach((genre) => {
-          //console.log("Genres of GameId:" + game.id + " is " + genre.name);
           aggregatedGenres.add(genre.name);
           aggregatedImages[aggregatedGenres.size -1] = res2.data.box_image;
         });
@@ -94,22 +93,11 @@ const useGames = (selectedGenre: string | null) => {
     for (const game of games) {
 
       try {
-        console.log("before fetch.   " + game.metacritic );
-
         const res = await apiClient.get<FetchGenresResponse>(`/games/${game.id}`, { signal: controller.signal });
         let gamesTemp: Game[] = [];  
-        console.log("before foreach.   " );
-
         res.data.genres.forEach((currentGameGenre) => {
-            console.log("before if.  currentGameGenre.name: " +currentGameGenre.name);
-
             if(selectedGenre == currentGameGenre.name){
-              //gamesTemp[gamesTemp.length] = game;
-              //gamesTemp.map((game)=> console.log("game in gamesTemp: " + game.name))
-              //console.log("----------");
               aggregatedGames[i] = game;
-              aggregatedGames.map((game)=> console.log("game in gamesTemp: " + game.name))
-              console.log("----------");
             } 
         });
       } 
@@ -120,8 +108,6 @@ const useGames = (selectedGenre: string | null) => {
         setError(err.message);
       }
       i++;  
-      
-      console.log("increasing i " + i);
     }
     const modifiedGames = modifyGameswithMockValues(aggregatedGames);
     setGames(modifiedGames);

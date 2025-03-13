@@ -14,6 +14,7 @@ interface Props {
   error: string;
   isLoadingGenres: boolean;
   onSelectGenre: (genre: string) => void;
+  selectedGenre: string | null;
 }
 
 const GenreList = ({
@@ -21,6 +22,7 @@ const GenreList = ({
   error,
   isLoadingGenres,
   onSelectGenre,
+  selectedGenre,
 }: Props) => {
   if (!genres || isLoadingGenres) {
     return <Spinner />;
@@ -35,6 +37,7 @@ const GenreList = ({
           <HStack>
             <Image boxSize="32px" borderRadius={8} src={genres.images[index]} />
             <Link
+              fontWeight={genre === selectedGenre ? "bold" : "normal"}
               onClick={() => onSelectGenre(genre)}
               variant="plain"
               href="#"
