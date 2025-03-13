@@ -25,7 +25,8 @@ function App() {
   const mainBg = useColorModeValue("blue.500", "blue.200");
   const mainColor = useColorModeValue("white", "gray.800");
 
-  const { games, error, isLoading, gatheredGenres } = useGames();
+  const { games, error, isLoadingGames, isLoadingGenres, gatheredGenres } =
+    useGames();
 
   return (
     <Grid
@@ -47,12 +48,12 @@ function App() {
           <GenreList
             genres={gatheredGenres}
             error={error}
-            isLoading={isLoading}
+            isLoadingGenres={isLoadingGenres}
           />
         </GridItem>{" "}
       </Show>
       <GridItem area="main" /*bg={mainBg} color={mainColor}*/>
-        <GameGrid games={games} error={error} isLoading={isLoading} />
+        <GameGrid games={games} error={error} isLoadingGames={isLoadingGames} />
       </GridItem>
     </Grid>
   );

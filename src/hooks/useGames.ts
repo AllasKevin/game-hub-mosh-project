@@ -50,7 +50,9 @@ const modifyGameswithMockValues = (results: AxiosResponse<FetchGamesResponse, an
 const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [isLoadingGames, setLoadingGames] = useState(false);
+  const [isLoadingGenres, setLoadingGenres] = useState(false);
+
   let aggregatedGenres = new Set<string>();
   let aggregatedImages: string[] = [];
   const [gatheredGenres, setGenres] = useState<GatheredGenres>({
@@ -80,17 +82,19 @@ const useGames = () => {
     }
     setGenres(aggregatedGatheredGenres);
 
-    setLoading(false);
+    setLoadingGenres(false);
   }
 
   const fetchGames = (controller: AbortController) => {
-    setLoading(true);
+    setLoadingGames(true);
+    setLoadingGenres(true);
+
     apiClient
     .get<FetchGamesResponse>("/games", {signal: controller.signal})
     .then((res1) => {
       const modifiedGames = modifyGameswithMockValues(res1);
       setGames((prevGames) => [...prevGames, ...modifiedGames]);
-      setLoading(false);
+      setLoadingGames(false);
 
       fetchGenresForAllGames(res1.data.results, controller);
     })
@@ -98,7 +102,7 @@ const useGames = () => {
       if(axios.isCancel(err)) return;
       console.log("setting error to: " + err.message);
       setError(err.message)});
-      //setLoading(false);
+      //setLoadingGames(false);
   };
 
   useEffect(() => {
@@ -110,7 +114,7 @@ const useGames = () => {
   }, []);
   const valuesArray = [...aggregatedGenres];
 
-  return { games, error, isLoading, gatheredGenres};
+  return { games, error, isLoadingGames, isLoadingGenres, gatheredGenres};
 }
 
 export default useGames;

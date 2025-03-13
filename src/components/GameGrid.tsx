@@ -7,10 +7,10 @@ import GameCardContainer from "./GameCardContainer";
 interface Props {
   games: Game[];
   error: string;
-  isLoading: boolean;
+  isLoadingGames: boolean;
 }
 
-const GameGrid = ({ games, error, isLoading }: Props) => {
+const GameGrid = ({ games, error, isLoadingGames }: Props) => {
   const skeletons = [1, 2, 3, 4, 5, 6];
 
   return (
@@ -21,7 +21,7 @@ const GameGrid = ({ games, error, isLoading }: Props) => {
         padding="10px"
         gap="10px"
       >
-        {isLoading &&
+        {isLoadingGames &&
           skeletons.map((skeleton) => (
             <GameCardContainer key={Math.random()}>
               <GameCardSkeleton key={skeleton} />

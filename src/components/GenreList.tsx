@@ -1,15 +1,17 @@
 import { GatheredGenres } from "@/hooks/useGames";
-import { HStack, Image, List, Text } from "@chakra-ui/react";
+import { HStack, Image, List, Spinner, Text } from "@chakra-ui/react";
 
 interface Props {
   genres: GatheredGenres;
   error: string;
-  isLoading: boolean;
+  isLoadingGenres: boolean;
 }
 
-const GenreList = ({ genres, error, isLoading }: Props) => {
-  if (!genres) {
-    return <div>Loading...</div>;
+const GenreList = ({ genres, error, isLoadingGenres }: Props) => {
+  if (!genres || isLoadingGenres) {
+    return <Spinner />;
+  } else if (error) {
+    return null;
   }
 
   return (
