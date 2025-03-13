@@ -16,6 +16,7 @@ import { BsFillAlarmFill } from "react-icons/bs";
 import GenreList from "./components/GenreList";
 import useGames, { Genre } from "./hooks/useGames";
 import { useEffect, useState } from "react";
+import PlatformSelector from "./components/PlatformSelector";
 
 function App() {
   const isLgOrLarger = useBreakpointValue({ base: false, lg: true });
@@ -56,6 +57,7 @@ function App() {
         </GridItem>{" "}
       </Show>
       <GridItem area="main" /*bg={mainBg} color={mainColor}*/>
+        <PlatformSelector></PlatformSelector>
         <GameGrid
           games={games}
           error={error}
