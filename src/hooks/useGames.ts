@@ -39,15 +39,15 @@ export interface FetchGamesResponse {
   results: Game[];
 }
 
-const modifyGameswithMockValues = (results: AxiosResponse<FetchGamesResponse, any>) => {
-    return results.data.results.map((game) => ({
+const modifyGameswithMockValues = (results: Game[]) => {
+    return results.map((game) => ({
         ...game,
         id: game.id,
         metacritic: Math.trunc(100 * Math.random()), 
       }));
 }
 
-const useGames = () => {
+const useGames = (selectedGenre: string | null) => {
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState("");
   const [isLoadingGames, setLoadingGames] = useState(false);
@@ -85,6 +85,50 @@ const useGames = () => {
     setLoadingGenres(false);
   }
 
+
+  async function fetchGamesById(controller: AbortController)  {
+    setLoadingGames(true);      
+    let aggregatedGames: Game[] = [];
+    let i = 0;
+
+    for (const game of games) {
+
+      try {
+        console.log("before fetch.   " + game.metacritic );
+
+        const res = await apiClient.get<FetchGenresResponse>(`/games/${game.id}`, { signal: controller.signal });
+        let gamesTemp: Game[] = [];  
+        console.log("before foreach.   " );
+
+        res.data.genres.forEach((currentGameGenre) => {
+            console.log("before if.  currentGameGenre.name: " +currentGameGenre.name);
+
+            if(selectedGenre == currentGameGenre.name){
+              //gamesTemp[gamesTemp.length] = game;
+              //gamesTemp.map((game)=> console.log("game in gamesTemp: " + game.name))
+              //console.log("----------");
+              aggregatedGames[i] = game;
+              aggregatedGames.map((game)=> console.log("game in gamesTemp: " + game.name))
+              console.log("----------");
+            } 
+        });
+      } 
+      catch (err: any) {
+        console.log("error is:   " + err);
+
+        if (axios.isCancel(err) || err instanceof TypeError) continue;
+        setError(err.message);
+      }
+      i++;  
+      
+      console.log("increasing i " + i);
+    }
+    const modifiedGames = modifyGameswithMockValues(aggregatedGames);
+    setGames(modifiedGames);
+    setLoadingGames(false);  
+  }
+  
+
   const fetchGames = (controller: AbortController) => {
     setLoadingGames(true);
     setLoadingGenres(true);
@@ -92,7 +136,7 @@ const useGames = () => {
     apiClient
     .get<FetchGamesResponse>("/games", {signal: controller.signal})
     .then((res1) => {
-      const modifiedGames = modifyGameswithMockValues(res1);
+      const modifiedGames = modifyGameswithMockValues(res1.data.results);
       setGames((prevGames) => [...prevGames, ...modifiedGames]);
       setLoadingGames(false);
 
@@ -109,10 +153,17 @@ const useGames = () => {
     const controller = new AbortController();
 
     //fetchGames(controller);
-    fetchGames(controller);
+    
+
+    if (selectedGenre){
+      const genreController = new AbortController();
+      fetchGamesById(genreController);
+    } else {
+      fetchGames(controller);
+    }
+
     return () => controller.abort();
-  }, []);
-  const valuesArray = [...aggregatedGenres];
+  }, [selectedGenre]);
 
   return { games, error, isLoadingGames, isLoadingGenres, gatheredGenres};
 }

@@ -14,8 +14,8 @@ import { ColorModeButton, useColorModeValue } from "./components/ui/color-mode";
 import GameGrid from "./components/GameGrid";
 import { BsFillAlarmFill } from "react-icons/bs";
 import GenreList from "./components/GenreList";
-import useGames from "./hooks/useGames";
-import { useEffect } from "react";
+import useGames, { Genre } from "./hooks/useGames";
+import { useEffect, useState } from "react";
 
 function App() {
   const isLgOrLarger = useBreakpointValue({ base: false, lg: true });
@@ -24,9 +24,10 @@ function App() {
 
   const mainBg = useColorModeValue("blue.500", "blue.200");
   const mainColor = useColorModeValue("white", "gray.800");
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
   const { games, error, isLoadingGames, isLoadingGenres, gatheredGenres } =
-    useGames();
+    useGames(selectedGenre);
 
   return (
     <Grid
@@ -49,11 +50,17 @@ function App() {
             genres={gatheredGenres}
             error={error}
             isLoadingGenres={isLoadingGenres}
+            onSelectGenre={(genre) => setSelectedGenre(genre)}
           />
         </GridItem>{" "}
       </Show>
       <GridItem area="main" /*bg={mainBg} color={mainColor}*/>
-        <GameGrid games={games} error={error} isLoadingGames={isLoadingGames} />
+        <GameGrid
+          games={games}
+          error={error}
+          isLoadingGames={isLoadingGames}
+          selectedGenre={selectedGenre}
+        />
       </GridItem>
     </Grid>
   );
